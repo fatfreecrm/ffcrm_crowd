@@ -58,17 +58,21 @@ AuthenticationsController.class_eval do
   
   def create
     if crowd_authenticate(params[:username], params[:password])
-      redirect_to(session[:where_to] || root_path)
+      flash[:notice] = t(:msg_welcome)
+      if current_user.login_count > 1 && current_user.last_login_at?
+        flash[:notice] << " " << t(:msg_last_login, l(current_user.last_login_at, :format => :mmddhhss))
+      end
+      redirect_back_or_default root_url
     else
       flash[:error] = "Sorry, I don't recognize you! Please try again."
-      redirect_to(login_path)
+      redirect_to :action => :new
     end
   end
-
+  
   def destroy
     crowd_log_out
-    session[:where_to] = nil
-    redirect_to root_path
+    flash[:notice] = t(:msg_goodbye)
+    redirect_back_or_default login_url
   end
   
 end

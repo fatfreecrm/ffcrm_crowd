@@ -1,7 +1,7 @@
 require "fat_free_crm"
 
 # Disable plugin for test & cucumber environments.
-unless %w(test cucumber).include?(Rails.env)
+if ENV['crowd_auth'] || !%w(test cucumber).include?(Rails.env)
 
   FatFreeCRM::Plugin.register(:crm_crowd, self) do
             name "Crowd"
@@ -17,6 +17,4 @@ else
   # Remove view paths if plugin is not initialized.
   paths = ActionController::Base.view_paths.dup; paths.pop; ActionController::Base.view_paths = paths
 end
-
-
 

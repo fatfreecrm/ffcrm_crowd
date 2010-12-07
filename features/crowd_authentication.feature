@@ -6,9 +6,9 @@ Feature:
 
   Scenario: User logs in with Crowd
     When I go to the login page
-    And I fill in "Username" with "bobjones"
-    And I fill in "Password" with "testing"
+    And I fill in "username" with "bobjones"
+    And I fill in "password" with "testing"
     And I press "Login"
-    Then I should see "Welcome, bobjones!"
+    Then I should see "Welcome, Bob!"
     And I should not see "Admin"
 
