@@ -1,19 +1,17 @@
 ApplicationController.class_eval do
-  include Crowd::SingleSignOn    
-  
-  before_filter :authenticate
-  
+  include Crowd::SingleSignOn
+
   private
 
     #----------------------------------------------------------------------------
-    def authenticate
+    def require_user
       session[:where_to] = request.fullpath
       redirect_to :login unless crowd_authenticated?
-    end   
-      
+    end
+
     #----------------------------------------------------------------------------
     def current_user_session
-      
+
       @current_user_session ||= crowd_token
 
 #      @current_user_session ||= Authentication.find
@@ -27,7 +25,7 @@ ApplicationController.class_eval do
     def current_user
       # Create or return current crowd user as FFCRM User model
       # (User is pegged via email.)
-      
+
       if crowd_authenticated?
         user = User.find_or_create_by_username(:email      => crowd_current_user[:attributes][:mail],
                                                :username   => crowd_current_user[:name],
@@ -35,27 +33,26 @@ ApplicationController.class_eval do
                                                :last_name  => crowd_current_user[:attributes][:sn])
         @current_user ||= user
       end
-      
+
       if @current_user && @current_user.preference[:locale]
         I18n.locale = @current_user.preference[:locale]
       end
       User.current_user = @current_user
-      
+
 #      @current_user ||= (current_user_session && current_user_session.record)
 #      if @current_user && @current_user.preference[:locale]
 #        I18n.locale = @current_user.preference[:locale]
 #      end
 #      User.current_user = @current_user
     end
-      
+
 end
 
 AuthenticationsController.class_eval do
 
-  skip_before_filter :authenticate
+  skip_before_filter :require_user, :only => [ :new, :create ]
   before_filter :require_no_user, :only => [ :new, :create ]
-  before_filter :require_user, :only => :destroy
-  
+
   def create
     if crowd_authenticate(params[:username], params[:password])
       flash[:notice] = t(:msg_welcome)
@@ -68,11 +65,11 @@ AuthenticationsController.class_eval do
       redirect_to :action => :new
     end
   end
-  
+
   def destroy
     crowd_log_out
     flash[:notice] = t(:msg_goodbye)
     redirect_back_or_default login_url
   end
-  
+
 end
