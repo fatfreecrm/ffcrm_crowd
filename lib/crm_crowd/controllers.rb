@@ -29,10 +29,10 @@ ApplicationController.class_eval do
       # (User is pegged via email.)
       
       if crowd_authenticated?
-        user = User.find_or_create_by_username!(:email      => crowd_current_user[:attributes][:mail],
-                                                :username   => crowd_current_user[:name],
-                                                :first_name => crowd_current_user[:attributes][:givenName],
-                                                :last_name  => crowd_current_user[:attributes][:sn])
+        user = User.find_or_create_by_username(:email      => crowd_current_user[:attributes][:mail],
+                                               :username   => crowd_current_user[:name],
+                                               :first_name => crowd_current_user[:attributes][:givenName],
+                                               :last_name  => crowd_current_user[:attributes][:sn])
         @current_user ||= user
       end
       
