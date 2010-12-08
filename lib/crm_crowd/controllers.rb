@@ -4,12 +4,6 @@ ApplicationController.class_eval do
   private
 
     #----------------------------------------------------------------------------
-    def require_user
-      session[:where_to] = request.fullpath
-      redirect_to :login unless crowd_authenticated?
-    end
-
-    #----------------------------------------------------------------------------
     def current_user_session
 
       @current_user_session ||= crowd_token
