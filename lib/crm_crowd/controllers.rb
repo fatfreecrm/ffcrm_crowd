@@ -5,14 +5,17 @@ ApplicationController.class_eval do
 
     #----------------------------------------------------------------------------
     def current_user_session
-
+      @current_user_session ||= Authentication.find
+      
+      # Try AuthLogic first (handles HTTP Basic Auth for XML API), fall back to crowd.
+      if @current_user_session && @current_user_session.respond_to?(:record)
+        if @current_user_session.record.suspended?
+          @current_user_session = nil
+        end
+      end
+      
+      # If @current_user_session fails with AuthLogic, try with crowd.
       @current_user_session ||= crowd_token
-
-#      @current_user_session ||= Authentication.find
-#      if @current_user_session && @current_user_session.record.suspended?
-#        @current_user_session = nil
-#      end
-#      @current_user_session
     end
 
     #----------------------------------------------------------------------------
@@ -20,26 +23,25 @@ ApplicationController.class_eval do
       # Create or return current crowd user as FFCRM User model
       # (User is pegged via email.)
 
-      if crowd_authenticated?
-        user = User.find_or_create_by_username(:email      => crowd_current_user[:attributes][:mail],
-                                               :username   => crowd_current_user[:name],
-                                               :first_name => crowd_current_user[:attributes][:givenName],
-                                               :last_name  => crowd_current_user[:attributes][:sn])
-        @current_user ||= user
+      # Try AuthLogic first (handles HTTP Basic Auth for XML API), fall back to crowd.
+      if current_user_session && current_user_session.respond_to?(:record)
+        @current_user ||= current_user_session.record
+      else
+        if crowd_authenticated?
+          user = User.find_or_create_by_username(:email      => crowd_current_user[:attributes][:mail],
+                                                 :username   => crowd_current_user[:name],
+                                                 :first_name => crowd_current_user[:attributes][:givenName],
+                                                 :last_name  => crowd_current_user[:attributes][:sn])
+          @current_user ||= user         
+        end
       end
 
+      # Set locale to user preference.
       if @current_user && @current_user.preference[:locale]
         I18n.locale = @current_user.preference[:locale]
       end
       User.current_user = @current_user
-
-#      @current_user ||= (current_user_session && current_user_session.record)
-#      if @current_user && @current_user.preference[:locale]
-#        I18n.locale = @current_user.preference[:locale]
-#      end
-#      User.current_user = @current_user
     end
-
 end
 
 AuthenticationsController.class_eval do
@@ -61,7 +63,14 @@ AuthenticationsController.class_eval do
   end
 
   def destroy
-    crowd_log_out
+    # Try logout with Authlogic first (for XML api
+    if current_user_session && current_user_session.respond_to?(:destroy)
+      current_user_session.destroy
+    else
+      # Log out with Crowd, if not using authlogic.
+      crowd_log_out
+    end
+
     flash[:notice] = t(:msg_goodbye)
     redirect_back_or_default login_url
   end
