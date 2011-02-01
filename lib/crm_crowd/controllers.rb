@@ -33,6 +33,8 @@ ApplicationController.class_eval do
                                               :first_name => crowd_current_user[:attributes][:givenName],
                                               :last_name  => crowd_current_user[:attributes][:sn])
           @current_user ||= user
+          # Fix for remigration crash
+          @current_user = user unless @current_user.id
         end
       end
 
