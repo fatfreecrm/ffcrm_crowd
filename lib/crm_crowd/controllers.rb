@@ -37,7 +37,7 @@ ApplicationController.class_eval do
       end
 
       # Fix for user crash when remigrating.
-      @current_user.save! unless @current_user.id
+      @current_user.save! if @current_user && !@current_user.id
 
       # Set locale to user preference.
       if @current_user && @current_user.preference[:locale]
