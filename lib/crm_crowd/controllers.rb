@@ -6,14 +6,14 @@ ApplicationController.class_eval do
     #----------------------------------------------------------------------------
     def current_user_session
       @current_user_session ||= Authentication.find
-      
+
       # Try AuthLogic first (handles HTTP Basic Auth for XML API), fall back to crowd.
       if @current_user_session && @current_user_session.respond_to?(:record)
         if @current_user_session.record.suspended?
           @current_user_session = nil
         end
       end
-      
+
       # If @current_user_session fails with AuthLogic, try with crowd.
       @current_user_session ||= crowd_token
     end
@@ -32,9 +32,12 @@ ApplicationController.class_eval do
                                                  :username   => crowd_current_user[:name],
                                                  :first_name => crowd_current_user[:attributes][:givenName],
                                                  :last_name  => crowd_current_user[:attributes][:sn])
-          @current_user ||= user         
+          @current_user ||= user
         end
       end
+
+      # Fix for user crash when remigrating.
+      @current_user.save! unless @current_user.id
 
       # Set locale to user preference.
       if @current_user && @current_user.preference[:locale]
@@ -76,3 +79,4 @@ AuthenticationsController.class_eval do
   end
 
 end
+
