@@ -36,8 +36,8 @@ ApplicationController.class_eval do
         end
       end
 
-      # Fix for user crash when remigrating.
-      @current_user.save! if @current_user && !@current_user.id
+      # Fix for user crash when remigrating database changes.
+      @current_user = User.find_by_email(@current_user.email) if @current_user && !@current_user.id
 
       # Set locale to user preference.
       if @current_user && @current_user.preference[:locale]
