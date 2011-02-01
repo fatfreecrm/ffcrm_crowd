@@ -28,16 +28,13 @@ ApplicationController.class_eval do
         @current_user ||= current_user_session.record
       else
         if crowd_authenticated?
-          user = User.find_or_create_by_username(:email      => crowd_current_user[:attributes][:mail],
-                                                 :username   => crowd_current_user[:name],
-                                                 :first_name => crowd_current_user[:attributes][:givenName],
-                                                 :last_name  => crowd_current_user[:attributes][:sn])
+          user = User.find_or_create_by_email(:email      => crowd_current_user[:attributes][:mail],
+                                              :username   => crowd_current_user[:name],
+                                              :first_name => crowd_current_user[:attributes][:givenName],
+                                              :last_name  => crowd_current_user[:attributes][:sn])
           @current_user ||= user
         end
       end
-
-      # Fix for user crash when remigrating database changes.
-      @current_user = User.find_by_email(@current_user.email) if @current_user && !@current_user.id
 
       # Set locale to user preference.
       if @current_user && @current_user.preference[:locale]
