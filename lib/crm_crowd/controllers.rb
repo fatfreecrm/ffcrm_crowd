@@ -28,10 +28,18 @@ ApplicationController.class_eval do
         @current_user ||= current_user_session.record
       else
         if crowd_authenticated?
-          user = User.find_or_create_by_email(:email      => crowd_current_user[:attributes][:mail],
-                                              :username   => crowd_current_user[:name],
-                                              :first_name => crowd_current_user[:attributes][:givenName],
-                                              :last_name  => crowd_current_user[:attributes][:sn])
+          unless user = User.find_by_username(crowd_current_user[:name])
+            # Update username if email is found
+            if user = User.find_by_email(crowd_current_user[:attributes][:mail])
+              user.update_attribute(:username, crowd_current_user[:name])
+            else
+              user = User.create!(:username   => crowd_current_user[:name],
+                                  :email      => crowd_current_user[:attributes][:mail],
+                                  :first_name => crowd_current_user[:attributes][:givenName],
+                                  :last_name  => crowd_current_user[:attributes][:sn])
+            end
+          end
+
           @current_user ||= user
         end
       end
