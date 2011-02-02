@@ -33,8 +33,6 @@ ApplicationController.class_eval do
                                               :first_name => crowd_current_user[:attributes][:givenName],
                                               :last_name  => crowd_current_user[:attributes][:sn])
           @current_user ||= user
-          # Fix for remigration crash
-          @current_user = user unless @current_user.id
         end
       end
 
@@ -68,6 +66,7 @@ AuthenticationsController.class_eval do
     # Try logout with Authlogic first (for XML api
     if current_user_session && current_user_session.respond_to?(:destroy)
       current_user_session.destroy
+      @current_user_session, @current_user = nil, nil
     else
       # Log out with Crowd, if not using authlogic.
       crowd_log_out
