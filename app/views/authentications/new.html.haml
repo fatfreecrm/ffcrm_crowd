@@ -14,20 +14,16 @@
 .standalone#standalone
   -# The following form gets submitted to #create when @authentication is nil,
   -# or to #update when @authentication is not nil (ex. suspended).
-  
+
   = form_tag authentication_path, :html => one_submit_only(:authentication) do |f|
     - if can_signup?
       .title_tools #{t :no_account} #{link_to t(:sign_up_now), signup_path}
     .title= t(:login)
-    .section
+    .section{:style => "overflow:hidden; *height: 1%;"}
       .label= t(:username) + ':'
       = text_field_tag :username
       .label= t(:password) + ':'
       = password_field_tag :password
 
-    %div(style="margin-left:12px") #{check_box_tag(:remember_me)} #{t :remember_me}
-    %br
-    .buttonbar
-      = submit_tag t(:login)
-      #{t :or}
-      = link_to t(:forgot_password) << '?', new_password_path
+      = submit_tag t(:login), :style => "margin-top:10px; font-size:18px;"
+
