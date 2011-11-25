@@ -58,7 +58,6 @@ AuthenticationsController.class_eval do
   before_filter :require_no_user, :only => [ :new, :create ]
 
   def create
-debugger
     @current_user_session, @current_user = nil, nil
     if crowd_authenticate(params[:authentication][:username], params[:authentication][:password])
       flash[:notice] = t(:msg_welcome)
