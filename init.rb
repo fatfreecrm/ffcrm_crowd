@@ -14,6 +14,8 @@ if ENV['crowd_auth'] || !%w(test cucumber).include?(Rails.env)
   
 else
   # Remove view paths if plugin is not initialized.
-  paths = ActionController::Base.view_paths.dup; paths.pop; ActionController::Base.view_paths = paths
-end
+  paths = ActionController::Base.view_paths.dup
+  my_path = File.join(File.dirname(__FILE__),'app','views')
+  ActionController::Base.view_paths = paths.delete_if {|p| p.to_s == my_path}
 
+end
