@@ -11,7 +11,6 @@ if ENV['crowd_auth'] || !%w(test cucumber).include?(Rails.env)
   end
 
   require "crm_crowd"
-  Rails.configuration.middleware.insert_before ::Rack::Lock, ::ActionDispatch::Static, root.join('public') 
   
 else
   # Remove view paths if plugin is not initialized.
