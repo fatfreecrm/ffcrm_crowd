@@ -59,7 +59,7 @@ AuthenticationsController.class_eval do
 
   def create
     @current_user_session, @current_user = nil, nil
-    if crowd_authenticate(params[:username], params[:password])
+    if crowd_authenticate(params[:authentication][:username], params[:authentication][:password])
       flash[:notice] = t(:msg_welcome)
       if current_user.login_count > 1 && current_user.last_login_at?
         flash[:notice] << " " << t(:msg_last_login, l(current_user.last_login_at, :format => :mmddhhss))
