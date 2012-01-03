@@ -1,7 +1,7 @@
 require "fat_free_crm"
 
 # Disable plugin for test & cucumber environments.
-if ENV['crowd_auth'] || !%w(test cucumber).include?(Rails.env)
+if ENV['crowd_auth'] || !%w(development test cucumber).include?(Rails.env)
 
   FatFreeCRM::Plugin.register(:crm_crowd, self) do
             name "Crowd"
