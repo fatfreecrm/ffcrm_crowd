@@ -2,3 +2,4 @@
 *.mdb
 */reports
 coverage
+Gemfile.lock

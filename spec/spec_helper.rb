@@ -1,10 +1,15 @@
-begin
-  require File.dirname(__FILE__) + '/../../../../spec/spec_helper'
-rescue LoadError
-  puts "You need to install rspec in your base app"
-  exit
+require 'rubygems'
+require 'bundler'
+
+Bundler.require :default, :development
+
+require 'capybara/rspec'
+
+Combustion.initialize!
+
+require 'rspec/rails'
+require 'capybara/rails'
+
+RSpec.configure do |config|
+  config.use_transactional_fixtures = true
 end
-
-plugin_spec_dir = File.dirname(__FILE__)
-ActiveRecord::Base.logger = Logger.new(plugin_spec_dir + "/debug.log")
-
