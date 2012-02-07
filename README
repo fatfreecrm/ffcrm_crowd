@@ -1,13 +1,16 @@
-CrmCrowd
-========
+Fat Free Crm Crowd
+==================
 
-Introduction goes here.
+To use add the following to your Gemfile
+
+  gem 'soap4r', :git => 'git://github.com/tribalvibes/soap4r-spox.git'
+  gem 'crowd-crossroads', :git => 'git://github.com/crossroads/crowd.git'
+  gem 'crowd_rails', :git => 'git://github.com/crossroads/crowd_rails.git'
+  gem 'fat_free_crm_crowd', :git => 'git://github.com/crossroads/crm_crowd.git'
+
+Then copy crm_crowd config/crowd_config.yml.example to your config folder config/crowd_settings.yml and update the settings for your environment
+
+You should then be able to authenticate using your crowd credentails
 
 
-Example
-=======
-
-Example goes here.
-
-
-Copyright (c) 2010 [name of plugin creator], released under the MIT license
+Copyright (c) 2010 Crossroads Foundation, released under the MIT license
