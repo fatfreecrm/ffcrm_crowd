@@ -1,4 +1,4 @@
-class ApplicationController
+ApplicationController.class_eval do
   include Crowd::SingleSignOn
 
   private

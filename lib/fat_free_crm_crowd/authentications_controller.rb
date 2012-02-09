@@ -1,4 +1,4 @@
-class AuthenticationsController
+AuthenticationsController.class_eval do
 
   skip_before_filter :require_user, :only => [ :new, :create ]
   before_filter :require_no_user, :only => [ :new, :create ]
