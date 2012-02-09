@@ -10,10 +10,8 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n")
   s.version = FatFreeCrmCrowd::VERSION
 
-  s.add_development_dependency 'rails', '~> 3.1.0'
   s.add_development_dependency 'rspec-rails', '~> 2.6'
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'combustion'
-  s.add_development_dependency 'ruby-debug19'
-  s.add_dependency 'rails', '~> 3.1.0'
+  s.add_dependency 'fat_free_crm'
 end
