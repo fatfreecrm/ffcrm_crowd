@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path('../lib', __FILE__)
-require 'fat_free_crm_crowd/version'
+require 'ffcrm_crowd/version'
 
 Gem::Specification.new do |s|
-  s.name = 'fat_free_crm_crowd'
+  s.name = 'ffcrm_crowd'
   s.authors = ['Ben Tillman']
   s.summary = 'Fat Free CRM - Crowd authentication'
   s.description = 'Fat Free CRM - Crowd authentication'
