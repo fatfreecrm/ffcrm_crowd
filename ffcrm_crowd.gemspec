@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.summary = 'Fat Free CRM - Crowd authentication'
   s.description = 'Fat Free CRM - Crowd authentication'
   s.files = `git ls-files`.split("\n")
-  s.version = FatFreeCrmCrowd::VERSION
+  s.version = FatFreeCRM::Crowd::VERSION
 
   s.add_development_dependency 'rspec-rails', '~> 2.6'
   s.add_development_dependency 'capybara'

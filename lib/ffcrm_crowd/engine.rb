@@ -1,4 +1,4 @@
-module ::FatFreeCrmCrowd
+module FatFreeCRM::Crowd
   class Engine < Rails::Engine
     config.to_prepare do
       require 'ffcrm_crowd/application_controller'
