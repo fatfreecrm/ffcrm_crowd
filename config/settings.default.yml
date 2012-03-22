@@ -1,0 +1,13 @@
+--- !map:HashWithIndifferentAccess
+crowd:
+  crowd_url: 
+    default: http://url/of/crowd/server
+    type: string    
+  crowd_app_name: <name-of-app>
+  crowd_app_pword: <app-password>
+  crowd_validation_factors_need_user_agent: 
+    default: false
+    type: boolean
+  crowd_session_validationinterval: 
+    default: 0  # Set > 0 for authentication caching.
+    type: integer
