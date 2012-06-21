@@ -1,3 +1,8 @@
+# Combustion always runs in test environment.
 test:
-  adapter:  sqlite3
-  database: db/combustion_test.sqlite
+  adapter: postgresql
+  database: ffcrm_crowd_test
+  username:
+  password:
+  schema_search_path: public
+  min_messages: warning
