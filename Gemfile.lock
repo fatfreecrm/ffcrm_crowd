@@ -128,7 +128,7 @@ GEM
     crass (1.0.6)
     css_parser (1.14.0)
       addressable
-    date (3.4.1)
+    date (3.5.1)
     devise (4.9.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -221,7 +221,7 @@ GEM
     mini_portile2 (2.8.9)
     minitest (5.25.5)
     mutex_m (0.3.0)
-    net-imap (0.3.9)
+    net-imap (0.4.24)
       date
       net-protocol
     net-pop (0.1.2)
@@ -362,7 +362,7 @@ GEM
     temple (0.10.0)
     thor (1.4.0)
     tilt (2.1.0)
-    timeout (0.4.3)
+    timeout (0.6.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unaccent (0.4.0)
